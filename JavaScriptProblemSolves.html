@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form>
+        <input type="number" min="0" oninput="validity.valid||(value='');" id="userinput" value="" /> 
+                                     <!-- ||oninput="validity.valid||(value='');"|| stops one from typing -ve numbers -->
+          <!-- Info Source:https://stackoverflow.com/questions/19233415/how-to-make-type-number-to-positive-numbers-only-->
+        
+        <input type="button" name="go" value="Submit" onclick="SetValue()" /><br>
+        <!--<input type="submit" onclick="SetValue()" />-->            
+    </form>
+    
+    <br><br><button onclick="Display()"><p>Display Inputs</p></button>
+    <p id="Demo"></p>
+
+    
+    <script>
+        const A = []; //For arrays, do not declare using var, since that can be mutated into another datatype. Use const instead. "let" allows the datatype to be changed
+        let Alength = 0;
+        function SetValue(){
+        let x = document.getElementById("userinput").value
+        document.getElementById("userinput").value ="" // To clear out the input Field after submitting
+
+        A.push(x);
+        Alength = A.length;
+        }
+        function Display(){
+            for (let y = 0; y < Alength; y++){
+                document.getElementById("Demo").innerHTML += "Input "+(y+1)+": " + A[y] + "<br>" ; //Modified following Line 88
+            }
+            
+        }
+
+        //Problem 1
+        function OddEven(){
+            const Even = [];
+            const Odd = [];
+            document.getElementById("E").innerHTML = ""; //To not make the display repeat previous results after putting additional INPUTs
+            document.getElementById("O").innerHTML = ""; //To not make the display repeat previous results after putting additional INPUTs
+            for (let i = 0; i <= Alength; i++){
+                if(A[i] % 2 == 0) Even.push(A[i]); 
+                else Odd.push(A[i]);
+            }
+            Even.sort(function(a, b){return a - b}); 
+            Odd.sort(function(a, b){return a - b});
+                //Numeric sort in Ascending Order. for Reverse Sort just Flip a and b
+ 
+            document.getElementById("E").innerHTML = "Even Numbers: " + Even;
+            document.getElementById("O").innerHTML = "Odd Numbers: " + Odd; //Why is there an Additional comma in the display ????
+        }
+
+        //Problem 2
+        function MinMax(){
+            const Empty = [];
+            const Sorted = Empty.concat(A);
+            Sorted.sort(function(a, b){return a - b});
+                   //Numeric sort in Ascending Order. for Reverse Sort just Flip a and b
+            document.getElementById("Lnum").innerHTML = "Largest Number: " + Sorted[Alength-1];
+            
+        }
+
+        //Problem 3
+        function MinMax3(){
+            const Empty3 = [];
+            const Sorted3 = Empty3.concat(A);
+            Sorted3.sort(function(a, b){return a - b});
+            document.getElementById("Min").innerHTML = "Minimum Number: " + Sorted3[0];
+            document.getElementById("Max").innerHTML = "Maximum Number: " + Sorted3[Alength-1];
+            
+        }
+
+        // Problem 4
+        function PrimeNum(){
+            document.getElementById("Prime").innerHTML = ""; //To not make the display repeat previous results after putting additional INPUTs
+            for (let y = 0; y < Alength; y++){
+                let D = A[y];
+                const Divs = [];               
+                if(D > 2){// Only One "Do{}While();" is Functional inside This function it seems ????
+                    for (let k = 2; k < A[y]; k++){
+                        if(A[y] % k == 0){
+                            Divs.push(k);
+                            //D++;//THis doesn't update the value ???? Problem with scope
+                        }
+                    }
+                    if(Divs.length == 0){//Divs.length has been used instead of variable D
+                        document.getElementById("Prime").innerHTML += "<br>" + "Input " + (y+1) +": " + A[y] + " is a Prime Number";
+                                                                   // += has been used so that "id - Prime" can be used more than Once To Print Results.
+                                                                  // Info Source: https://stackoverflow.com/questions/12996763/innerhtml-with-for-loop-in-javascript
+                    }
+                    if(Divs.length > 0){
+                        document.getElementById("Prime").innerHTML += "<br>" + "Input " + (y+1) +": " + A[y] + " is not a Prime Number " + " [" + "Divisor List: " + Divs + "]";       
+                    }
+                } 
+                else{
+                    if(A[y] == 0){
+                        document.getElementById("Prime").innerHTML += "<br>" + "Input " + (y+1) +": " + A[y] + " is not a Prime Number";
+                    }
+                    if(A[y] == 1){
+                        document.getElementById("Prime").innerHTML += "<br>" + "Input " + (y+1) +": " + A[y] + " is not a Prime Number";
+                    }
+                    if(A[y] == 2){
+                        document.getElementById("Prime").innerHTML += "<br>" + "Input " + (y+1) +": " + A[y] + " is a Prime Number ";
+                    }
+                } 
+                
+            }
+        }
+
+        //Problem 5
+        function Factorial(){
+            document.getElementById("Factos").innerHTML = "";
+            for (let y = 0; y < Alength; y++){
+                let Fact = 1;
+                for (let x = 1; x < A[y] ; x++){
+                    Fact = Fact * x;
+                }
+                if(A[y] == 0) document.getElementById("Factos").innerHTML += "Input " + (y+1) + ": " + A[y] + "! = " + 1 + "<br>";
+                else document.getElementById("Factos").innerHTML += "Input " + (y+1) + ": " + A[y] + "! = " + (Fact * A[y]) + "<br>";
+            }
+        }
+
+        //Problem 7
+        const B = [];
+        function newArray(){
+            let B = [];
+            var Excape = ""; //What is the escape character for '' in JS ????
+                            //-- [\"\"] -- Use This to Escape ""
+            document.getElementById("INPUT").innerHTML ='<input type="number" min="0" id="userinput2" value="" oninput="validity.valid||(value=\'\');" />' + 
+                                                        '<input type="button" name="go" value="Array Length" onclick="ArrLength()" />';
+        }
+        function ArrLength(){
+            document.getElementById("INPUT2").innerHTML ='<input type="number" min="0" id="userinput3" value="" oninput="validity.valid||(value=\'\');" />' + 
+                                                         '<input type="button" name="goto" value="Submit" onclick="InArray()" />';
+        }
+        function InArray(){
+            let L = document.getElementById("userinput2").value                                                    
+            let In = document.getElementById("userinput3").value
+            document.getElementById("userinput3").value = "";
+            B.push(In);
+            if(B.length >= L){      
+                document.getElementById("INPUT").innerHTML = "";
+                document.getElementById("INPUT2").innerHTML = "";                                      
+                document.getElementById("Disparr").innerHTML = "New Array: " + B;
+            } 
+        }
+
+        //Problem 8
+        function SortnewArray(){
+            B.sort(function(a, b){return a - b});
+            if(B.length > 0){
+                document.getElementById("Sorted2").innerHTML = "Soerted New Array: " + B;
+            }
+        }
+
+        //Problem 9
+        let CWin;
+        function NewWindow(){
+            Cwin = window.open("","", "width=500,height=500"); //window.open(URL, name, specs, replace)
+            Cwin.document.write('<title>New Window</title>');
+        }
+        function CloseNewWindow(){
+            Cwin.close();
+        }
+
+        //Problem 10
+        function setEP(){
+        let Ten = "";
+        let Em = document.getElementById('Emailin').value;
+        let Pass = document.getElementById("Passin").value;
+        if(Em.match(/@/g) == null || Em.match(/\./g) == null){
+            document.getElementById('Emailin').value = "";
+            alert("Wrong Email Adress: Missing @ or .");
+        }
+        Ten = Pass.match(/[0-9]/g);
+        
+        if(Pass.length > 8 || Pass.length < 8 || Pass.match(/[a-z]/gi) == null || Pass.match(/[0-9]/g) == null || Ten.length < 5 || Pass.match(/[`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/) != null){
+                                                                                             //for sequencial limits -- Info Source: https://stackoverflow.com/questions/63761326/password-regex-that-requires-at-least-two-of-certain-characters
+                                                            // .match(/ /gi) for making search Case Insensitives
+            document.getElementById('Passin').value = "";
+            alert("Password Condition not Fulfilled, Please Try Gain");
+        }
+
+    }
+                
+
+    </script>
+
+    <h2>Sol<sup>n</sup> to Problem 1: <button onclick="OddEven()"><p>Calculate Odd Even</p></button></h2> <!-- -->
+    <p id="E"></p>
+    <p id="O"></p>
+
+    <h2>Sol<sup>n</sup> to Problem 2: <button onclick="MinMax()"><p>Find Out the Largest Number</p></button></h2> <!-- -->
+    <p id="Lnum"></p>
+    
+    <h2>Sol<sup>n</sup> to Problem 3: <button onclick="MinMax3()"><p>Find Out Minimum And Maximum</p></button></h2> <!-- -->
+    <p id="Min"></p>
+    <p id="Max"></p>
+
+    <h2>Sol<sup>n</sup> to Problem 4: <button onclick="PrimeNum()"><p>Prime Number CheckBlock</p></button></h2> <!-- -->
+    <p id="Prime"></p>
+    
+    <h2>Sol<sup>n</sup> to Problem 5: <button onclick="Factorial()"><p>Find Factorial Value</p></button></h2> <!-- -->
+    <p id="Factos"></p>
+
+    <h2>Sol<sup>n</sup> to Problem 7: <button onclick="newArray()"><p>Create a New Array</p></button></h2> <!-- -->
+    <p><form id="INPUT"></form>
+    <form id="INPUT2"></form></p><br>
+    <p id="Disparr"></p>
+
+    <h2>Sol<sup>n</sup> to Problem 8: <button onclick="SortnewArray()"><p id="Sorted2">Sort the New Array</p></button></h2> <!-- -->
+    
+    <h2>Sol<sup>n</sup> to Problem 9: <button onclick="NewWindow()"><p>Open new Window</p></button> <button onclick="CloseNewWindow()"><p>Close The New Window</p></button></h2> <!-- -->
+    
+    <h2>Sol<sup>n</sup> to Problem 10</h2> <!-- -->
+    <form>
+        <label for="Emailin">Email:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label> <!--[&nbsp;] is Used for Space//// Info Source: https://blog.hubspot.com/website/html-space -->
+        <input type="text" id="Emailin" value="" size="40" /> <br><br>
+        <label for="Passin">Password:</label>
+        <input type="text" id="Passin" value="" />
+        <label for="Passin">[8 characters long WITH at least 5 digits and 1 Alphabets // No SPECIAL CHARACTER ALLOWED]</label>
+        <br><br> 
+        <input type="button" value="Enter" onclick="setEP()" style="height:50px; width:150px" />      
+    </form>
+    
+
+    <h2>Sol<sup>n</sup> ( "  ^  " )</h2> <!-- -->
+
+</body>
+</html>
